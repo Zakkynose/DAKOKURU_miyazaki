@@ -29,11 +29,14 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 	@Override
 	public Department createDepartment(Department department) {
-		department.setCreatedAt(LocalDateTime.now());  //作成日時を設定
-		department.setUpdatedAt(LocalDateTime.now());  //更新日時を設定
-		return departmentRepository.save(department);  //新規部署を作成
-	}
-
+        // 部署名（日本語）の重複チェック
+        if (departmentRepository.existsByNameJp(department.getNameJp())) {
+            throw new IllegalArgumentException("部署名 '" + department.getNameJp() + "' は既に存在します。");
+        }
+        department.setCreatedAt(LocalDateTime.now());
+        department.setUpdatedAt(LocalDateTime.now());
+        return departmentRepository.save(department);
+    }
 	@Override
 	public Department updateDepartment(Long id, Department departmentDetails) {
 		
@@ -51,9 +54,14 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public void deleteDepartment(Long id) {
-		departmentRepository.deleteById(id); // IDで部署を削除
-	}
+	 public void deleteDepartment(Long id) {
+        // 削除対象が存在するか確認（任意だが推奨）
+        if (!departmentRepository.existsById(id)) {
+            throw new IllegalArgumentException("指定されたIDの部署が見つかりません: " + id);
+        }
+        departmentRepository.deleteById(id); // JpaRepositoryのdeleteById()を利用
+    }
+
 
 	@Override
 	public List<Department> searchDepartments(String keyword) {

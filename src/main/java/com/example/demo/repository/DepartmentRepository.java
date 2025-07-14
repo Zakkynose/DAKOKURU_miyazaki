@@ -37,4 +37,6 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
      * SQLの LIKE '%keyword' に相当します。
      */
     List<Department> findByNameJpEndingWith(String suffix);
+
+	boolean existsByNameJp(String nameJp);
 }
