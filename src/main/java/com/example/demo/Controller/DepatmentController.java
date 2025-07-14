@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -95,6 +96,44 @@ public class DepatmentController {
         model.addAttribute("department", departmentOptional.get());
         return "department/edit";
     }
+	@PutMapping("/department/update/{id}") 
+    public String updateDepartment(
+            @PathVariable("id") Long id, 
+            @Valid @ModelAttribute("department") Department department,
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (department.getId() == null) {
+             department.setId(id); // パス変数のIDをDepartmentオブジェクトに設定
+        } else if (!department.getId().equals(id)) {
+            // パス変数のIDとフォームのIDが異なる場合のハンドリング（通常は発生しない想定だが念のため）
+            model.addAttribute("errorMessage", "リクエストされたIDとフォームのIDが一致しません。");
+            model.addAttribute("department", department);
+            return "department/edit";
+        }
+
+
+        if (result.hasErrors()) {
+            model.addAttribute("department", department);
+            return "department/edit";
+        }
+
+        try {
+            departmentService.updateDepartment(id, department); // ここでidを渡すことを確認
+            redirectAttributes.addFlashAttribute("successMessage", "部署情報が正常に更新されました。");
+            return "redirect:/department/index";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("department", department);
+            return "department/edit";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "部署の更新中に予期せぬエラーが発生しました: " + e.getMessage());
+            model.addAttribute("department", department);
+            return "department/edit";
+        }
+    }
+
 	 @DeleteMapping("/department/delete/{id}") // DELETEリクエストを受け付ける
 	    public String deleteDepartment(@PathVariable Long id, RedirectAttributes redirectAttributes) {
 	        try {
