@@ -4,47 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>部署一覧</title>
-	
-	<link rel="stylesheet" th:href="@{/css/department-list.css}">
-    
 </head>
-<body>
-    <h1>部署一覧</h1>
+    <body>
+        <h1>部署一覧</h1>
 
-    <div class="search-area">
-        <form th:action="@{/department/index}" method="get">
-            <label for="keyword">(2) キーワード</label>
-            <input type="text" id="keyword" name="keyword" th:value="${keyword}">
-            <button type="submit">(4) 検索</button>
-            <button type="button" class="clear" onclick="location.href='/department/index'">(5) クリア</button>
-        </form>
-    </div>
+            <div th:if="${successMessage}" class="success-message">
+            <p th:text="${successMessage}"></p>
+            </div>
 
-    <div class="add-button-area">
-        <a th:href="@{/department/create}">(6) 部署新規追加</a>
-    </div>
+            <form th:action="@{/department/index}" method="get" class="search-form">
+                <label for="keyword">キーワード:</label>
+                <input type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="検索したい部署名を入力">
+                <button type="submit" class="search-button">検索</button>
+                <button type="button" class="clear-button" onclick="location.href='/department/index';">クリア</button>
+            </form>
 
-    <p class="search-results">検索結果: <span th:text="${departments.size()}">0</span>件</p>
+        <p>検索結果: <span th:text="${departments.size()}">0</span>件</p>
 
-    <table>
-        <thead>
-            <tr>
-                <th>部署名</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="dept : ${departments}">
-                <td th:text="${dept.nameJp}"></td>
-                <td>
-                    <a th:href="@{/department/edit/{id}(id=${dept.id})}" class="edit-button">編集</a>
+        <a th:href="@{/department/create}" class="create-button">部署新規追加</a>
+
+        <table>
+            <tbody>
+                <tr th:each="department : ${departments}">
+                    <td th:text="${department.nameJp}"></td>
+                    <td>
+                        <a th:href="@{/department/edit/{id}(id=${department.id})}" class="edit-link">編集</a>
                     </td>
-            </tr>
-            <tr th:if="${departments.empty}">
-                <td colspan="2">部署が見つかりませんでした。</td>
-            </tr>
-        </tbody>
-    </table>
-
-</body>
+                </tr>
+                <tr th:if="${departments.empty}">
+                    <td colspan="6">部署情報はありません。</td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
 </html>

@@ -18,4 +18,7 @@ public interface DepartmentService {
 	void deleteDepartment (Long id);//部署の削除
 	
 	List<Department> searchDepartments(String keyword);//部署の検索
+
+	Optional<Department> findById(Long id);
+
 }
