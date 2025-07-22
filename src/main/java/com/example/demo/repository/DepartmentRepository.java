@@ -38,6 +38,8 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
 	List<Department> findByNameJpEndingWith(String suffix);
 
 	boolean existsByNameJp(String nameJp);
+	
+	boolean existsByNameEn(String nameEn);
 
 	List<Department> findByNameJpContainingIgnoreCaseOrNameEnContainingIgnoreCase(String nameJp, String nameEn);
 
