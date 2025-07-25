@@ -29,7 +29,7 @@ public class Department {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "部署名を登録してください。")
+	@NotBlank(message = "部署名を入力してください。")
 	@Size(min = 1, max = 255, message = "部署名は1文字以上、255文字以内で入力してください。")
 	@Column(name = "name_jp")
 	private String nameJp;
