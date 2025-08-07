@@ -80,7 +80,7 @@
             </div>
             <div>
                 <label for="nameJp">変更後:</label> 
-                <input type="text" id="nameJp" th:field="*{nameJp}" placeholder="新しい部署名（日本語）を入力" required>
+                <input type="text" id="nameJp" th:field="*{nameJp}" placeholder="新しい部署名（日本語）を入力" required >
                 <span th:if="${#fields.hasErrors('nameJp')}" th:errors="*{nameJp}" class="validation-error"></span>
             </div>
             <div>
