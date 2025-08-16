@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function updateClock() {
         const now = new Date();
-        // 日付のフォーマット (例: 2025/08/09 (土))
+        // 日付のフォーマット (例: 2025/08/16 (土))
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
