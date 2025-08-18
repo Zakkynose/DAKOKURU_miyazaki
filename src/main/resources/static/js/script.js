@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
 //以下、各ファイルのjs情報 (layout.html)
 // jQueryを使用したナビゲーションバーのアニメーション
 $(function() {
