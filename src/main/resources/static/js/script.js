@@ -32,8 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (timestampTimeInput) {
             const formattedDateTime = `${year}-${month}-${day} ${formattedTime}`;
             timestampTimeInput.value = formattedDateTime;
-         }
-     }
+        }
+    }
     // 1秒ごとに時計を更新
     setInterval(updateClock, 1000);
     // 初回実行
