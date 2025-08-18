@@ -99,46 +99,4 @@ public class TimestampController {
 
         return "redirect:/timestamp/create";
     }
-
-    @GetMapping("/users_daily_timestamps/{period}")
-    public String getDailyTimestampByUsers(@PathVariable("period") String period,
-            Model model, @ModelAttribute("timestampForm") UserTimestampForm form) {
-
-        // "yyyy-MM" 形式のパラメータを YearMonth に変換
-        YearMonth ym = YearMonth.parse(period, DateTimeFormatter.ofPattern("yyyy-MM"));
-
-        // 月初・月末を取得
-        LocalDate firstDay = ym.atDay(1);
-        LocalDate lastDay = ym.atEndOfMonth();
-
-        // フォーマットを定義
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-
-        // フォーマットを適用
-        String formattedFirstDay = firstDay.format(formatter);
-        String formattedLastDay = lastDay.format(formatter);
-
-        // Thymeleaf に渡す
-        model.addAttribute("ym", ym);
-        model.addAttribute("firstDay", formattedFirstDay);
-        model.addAttribute("lastDay", formattedLastDay);
-
-        // 検索キーワードからユーザーIDを取得
-        List<Long> userIds = nameService.searchUsers(form.getKeyword());
-
-        System.out.println(userIds);
-        // サービスを通じて日付ごとの打刻情報を取得
-        List<Object[]> timestamps = userService.getDailyTimestamps(userIds, firstDay, lastDay);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            String json = objectMapper.writeValueAsString(timestamps);
-            System.out.println(json);
-        } catch (JsonProcessingException e) {
-            // TODO 自動生成された catch ブロック
-            e.printStackTrace();
-        }
-        model.addAttribute("timestamps", timestamps);
-
-        return "timestamps/users_daily_timestamps";
-    }
 }
