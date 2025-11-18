@@ -32,6 +32,7 @@ public class GroupRequiredValidator implements ConstraintValidator<GroupRequired
                 break;
             }
         }
+     
 
         if (anyFieldHasValue) {
             // 2. いずれかのフィールドに値があれば、全てのフィールドが必須であるかチェック

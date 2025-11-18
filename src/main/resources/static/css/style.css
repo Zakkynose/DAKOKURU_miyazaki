@@ -72,3 +72,32 @@ main {
 .error-message {
     color: red;
 }
+.Register-button{
+    /* 必須：リンクの下線を消し、ブロック要素のように振る舞わせる */
+    text-decoration: none;
+    display: inline-block;
+
+    /* 見た目：ボタンの形状と色を設定 */
+    padding: 10px 20px;
+    background-color: #ccc; /* 薄いグレーなど */
+    color: #333; /* 文字色 */
+    border: 1px solid #aaa; /* 境界線 */
+    border-radius: 4px; /* 角を少し丸める */
+    text-align: center;
+    cursor: pointer; /* マウスオーバー時にポインターを表示 */
+}
+
+.cancel-button-link {
+    /* 必須：リンクの下線を消し、ブロック要素のように振る舞わせる */
+    text-decoration: none;
+    display: inline-block;
+
+    /* 見た目：ボタンの形状と色を設定 */
+    padding: 10px 20px;
+    background-color: #ccc; /* 薄いグレーなど */
+    color: #333; /* 文字色 */
+    border: 1px solid #aaa; /* 境界線 */
+    border-radius: 4px; /* 角を少し丸める */
+    text-align: center;
+    cursor: pointer; /* マウスオーバー時にポインターを表示 */
+}

@@ -12,7 +12,7 @@ public interface UserService {
 
     public void deleteById(Long userId);
 
-    Optional<User> findByEmail(String email);
+    Optional<User> findByEmail(String string);
 
-    Optional<User> findByEmployeeNo(Long employeeNo);
+    Optional<User> findByEmployeeNo(String employeeNo);
 }

@@ -22,7 +22,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,6 +39,7 @@ public class User {
 
     @Column(name = "employee_no")
     private Long employeeNo;
+    //private String employeeNo;
 
     @Column(name = "joining_date", nullable = false)
     private LocalDate joiningDate;
@@ -82,8 +82,12 @@ public class User {
     @JoinTable(name = "department_affiliations", joinColumns = @JoinColumn(name = "user_id"), 
         inverseJoinColumns = @JoinColumn(name = "department_id"))
     private Set<Department> departments = new HashSet<>();
-
     //    @OneToMany()
     //    @JoinColumn(name = "user_id")
     //    private List<Timestamp> timestamp = new ArrayList<>();
+
+	public void setEmployeeNo(String employeeNo) {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
 }
