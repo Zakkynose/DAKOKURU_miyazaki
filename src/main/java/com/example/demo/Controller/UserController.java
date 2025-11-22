@@ -24,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class UserController {
-
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final NameService nameService;
@@ -39,8 +38,7 @@ public class UserController {
 
     @PostMapping("/user/store")
     public String store(@Validated @ModelAttribute("userForm") UserForm form,
-            BindingResult result, RedirectAttributes ra)  {
-        
+            BindingResult result, RedirectAttributes ra) {
         //メールアドレスの重複チェック
         Optional<User> existingEmail = userService.findByEmail(form.getEmail());
         if (existingEmail.isPresent()) {
@@ -57,8 +55,7 @@ public class UserController {
                                 (form.getOlnEn() != null && !form.getOlnEn().isEmpty());
         // 入力された項目があれば、全て必須とする
         if (hasAnyOldName) {
-            String errorMessage = "旧姓の各欄に一つでも入力があった場合は必須です。";
-            
+            String errorMessage = "旧姓の各欄に一つでも入力があった場合は必須です。";          
             // エラーメッセージを表示したいフィールドにエラーを紐づける
             if (form.getOlnJp() == null || form.getOlnJp().isEmpty()) {
                 result.rejectValue("olnJp", "group.required.oln", errorMessage);
@@ -73,13 +70,11 @@ public class UserController {
                 result.rejectValue("olnEn", "group.required.oln", errorMessage);
             }
         }
-
         // グループバリデーションチェック：ミドルネーム 
         boolean hasAnyMiddleName = (form.getMnJp() != null && !form.getMnJp().isEmpty()) ||
                                    (form.getMnJpHira() != null && !form.getMnJpHira().isEmpty()) ||
                                    (form.getMnJpKata() != null && !form.getMnJpKata().isEmpty()) ||
                                    (form.getMnEn() != null && !form.getMnEn().isEmpty());
-
         if (hasAnyMiddleName) {
             String errorMessage = "ミドルネームの各欄に一つでも入力があった場合は必須です。";
             if (form.getMnJp() == null || form.getMnJp().isEmpty()) {
@@ -95,8 +90,6 @@ public class UserController {
                 result.rejectValue("mnEn", "group.required.mn", errorMessage);
             }
         }
-
-
         // バリデーションエラー/重複チェックエラー/グループチェックエラーがあればフォームに戻る 
         if (result.hasErrors()) {
             ra.addFlashAttribute("org.springframework.validation.BindingResult.userForm", result);
@@ -107,7 +100,7 @@ public class UserController {
         User user = new User();
         user.setEmail(form.getEmail());
         user.setPassword(passwordEncoder.encode(form.getPassword()));
-        user.setEmployeeNo((form.getEmployeeNo())); 
+        user.setEmployeeNo((form.getEmployeeNo()));
         user.setJoiningDate(form.getJoiningDate());
         userService.save(user); // Userの保存 (IDが自動生成される)
         
@@ -132,11 +125,10 @@ public class UserController {
         name.setEnglishNotation(Optional.ofNullable(form.getEnglishNotation()).orElse(false));
         name.setUser(user); 
         nameService.save(name); // Nameの保存
-        
-     //  成功時のリダイレクトを追加します 
+        //  成功時のリダイレクトを追加します 
         ra.addFlashAttribute("successMessage", "ユーザーの登録に成功しました。");
         return "redirect:/user/index"; 
-            }
+    }
     
     @PostMapping("/user/update")
     public String update(@Validated @ModelAttribute("userForm") UserForm form,
@@ -154,8 +146,6 @@ public class UserController {
                 result.rejectValue("employeeNo", "duplicate.employeeNo", "社員番号が既に存在しています。");
             }
         }
-       
-
         if (result.hasErrors()) {
             ra.addFlashAttribute("org.springframework.validation.BindingResult.userForm", result);
             ra.addFlashAttribute("userForm", form);
@@ -169,11 +159,11 @@ public class UserController {
         System.out.println(form.getId());
         User user = userService.findById(form.getId()).orElse(new User());
         user.setEmail(form.getEmail());
-        user.setPassword(passwordEncoder.encode(form.getPassword()));       
+        user.setPassword(passwordEncoder.encode(form.getPassword()));
         user.setEmployeeNo((form.getEmployeeNo()));
         user.setJoiningDate(form.getJoiningDate());
         userService.save(user);
-       
+        
         Name name = nameService.findByUserId(form.getId());
         name.setFnJp(form.getFnJp());
         name.setFnJpHira(form.getFnJpHira());
@@ -196,7 +186,6 @@ public class UserController {
         
         ra.addFlashAttribute("successMessage", "ユーザーの更新に成功しました。");
         return "redirect:/user/index";
-
     }
    
     @PostMapping("/user/destroy")

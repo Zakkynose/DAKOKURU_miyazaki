@@ -2,9 +2,7 @@ package com.example.demo.form;
 
 import java.time.LocalDate;
 
-//import com.example.demo.validation.GroupRequired;
 import com.example.demo.validation.UniqueEmail;
-//import com.example.demo.validation.UserGroupRequired;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +12,6 @@ import lombok.Data;
 
 @Data
 public class UserForm implements ValidationGroups {
-
     private Long id;
 
     @NotBlank(message = "名前(正式表示)を入力してください。")
