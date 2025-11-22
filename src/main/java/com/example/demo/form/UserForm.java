@@ -13,10 +13,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-//@UserGroupRequired({ 
-    //@GroupRequired(fields = {"olnJp", "olnJpHira", "olnJpKata", "olnEn"}, message = "旧姓は入力する項目をすべて入力してください。"),
-    //@GroupRequired(fields = {"mnJp", "mnJpHira", "mnJpKata", "mnEn"}, message = "ミドルネームは入力する項目をすべて入力してください。")
-//})
 public class UserForm implements ValidationGroups {
 
     private Long id;
@@ -113,16 +109,4 @@ public class UserForm implements ValidationGroups {
     @NotNull(message = "入社日を入力してください。")
     private LocalDate joiningDate;
     private Boolean englishNotation;
-
-    // 旧姓フィールドのいずれかが入力された場合は、olnJp も必須
-    //@AssertTrue(message = "旧姓の名前(正式表示)を入力してください。")
-    //public boolean isOldNameValid() {
-        //if ((olnJpHira != null && !olnJpHira.isEmpty()) ||
-                //(olnJpKata != null && !olnJpKata.isEmpty()) ||
-                //(olnEn != null && !olnEn.isEmpty())) {
-            //return olnJp != null && !olnJp.isEmpty();
-        //}
-        //return true;
-    //}
-
 }

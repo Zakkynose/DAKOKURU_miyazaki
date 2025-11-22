@@ -40,7 +40,7 @@ public class UserController {
     @PostMapping("/user/store")
     public String store(@Validated @ModelAttribute("userForm") UserForm form,
             BindingResult result, RedirectAttributes ra)  {
-    	
+        
         //メールアドレスの重複チェック
         Optional<User> existingEmail = userService.findByEmail(form.getEmail());
         if (existingEmail.isPresent()) {
@@ -50,7 +50,7 @@ public class UserController {
         if (existingEmployeeNo.isPresent()) {
             result.rejectValue("employeeNo", "duplicate.employeeNo", "社員番号が既に存在しています。");
         }
-        // ★★★ グループバリデーションチェック：旧姓 ★★★
+        //  グループバリデーションチェック：旧姓 
         boolean hasAnyOldName = (form.getOlnJp() != null && !form.getOlnJp().isEmpty()) ||
                                 (form.getOlnJpHira() != null && !form.getOlnJpHira().isEmpty()) ||
                                 (form.getOlnJpKata() != null && !form.getOlnJpKata().isEmpty()) ||
@@ -74,7 +74,7 @@ public class UserController {
             }
         }
 
-        // ★★★ グループバリデーションチェック：ミドルネーム ★★★
+        // グループバリデーションチェック：ミドルネーム 
         boolean hasAnyMiddleName = (form.getMnJp() != null && !form.getMnJp().isEmpty()) ||
                                    (form.getMnJpHira() != null && !form.getMnJpHira().isEmpty()) ||
                                    (form.getMnJpKata() != null && !form.getMnJpKata().isEmpty()) ||
@@ -97,26 +97,16 @@ public class UserController {
         }
 
 
-        // ★★★ バリデーションエラー/重複チェックエラー/グループチェックエラーがあればフォームに戻る ★★★
+        // バリデーションエラー/重複チェックエラー/グループチェックエラーがあればフォームに戻る 
         if (result.hasErrors()) {
             ra.addFlashAttribute("org.springframework.validation.BindingResult.userForm", result);
             ra.addFlashAttribute("userForm", form);
             return "redirect:/user/create";
         }
-     // バリデーションエラー/重複チェックエラーがあればフォームに戻る
-      //  if (result.hasErrors()) {
-        //    ra.addFlashAttribute("org.springframework.validation.BindingResult.userForm", result);
-          //  ra.addFlashAttribute("userForm", form);
-          //  return "redirect:/user/create";
-           //}
-     // ★★★ 欠落していたDB登録処理を再導入 ★★★
-        
         // Userエンティティの作成とデータのセット
         User user = new User();
         user.setEmail(form.getEmail());
         user.setPassword(passwordEncoder.encode(form.getPassword()));
-        
-        // ★前回問題となった箇所。NumberFormatException対策は別途必要だが、まずは登録処理を復旧
         user.setEmployeeNo((form.getEmployeeNo())); 
         user.setJoiningDate(form.getJoiningDate());
         userService.save(user); // Userの保存 (IDが自動生成される)
@@ -140,14 +130,14 @@ public class UserController {
         name.setMnJpKata(form.getMnJpKata());
         name.setMnEn(form.getMnEn());
         name.setEnglishNotation(Optional.ofNullable(form.getEnglishNotation()).orElse(false));
-        name.setUser(user); // 保存されたUserを外部キーとしてセット
+        name.setUser(user); 
         nameService.save(name); // Nameの保存
         
-     // ★★★ ここに成功時のリダイレクトを追加します ★★★
+     //  成功時のリダイレクトを追加します 
         ra.addFlashAttribute("successMessage", "ユーザーの登録に成功しました。");
-        return "redirect:/user/index"; // 成功時はこのStringを返す！
+        return "redirect:/user/index"; 
             }
-        
+    
     @PostMapping("/user/update")
     public String update(@Validated @ModelAttribute("userForm") UserForm form,
             BindingResult result, RedirectAttributes ra) {
@@ -158,7 +148,6 @@ public class UserController {
         }
 
         // 社員番号の重複チェック
-        //if (form.getEmployeeNo() != null && !form.getEmployeeNo().isEmpty()) {
         if (form.getEmployeeNo() != null && "".equals(form.getEmployeeNo())){
             Optional<User> existingEmployeeNo = userService.findByEmployeeNo(form.getEmployeeNo());
             if (existingEmployeeNo.isPresent() && !existingEmployeeNo.get().getId().equals(form.getId())) {
@@ -176,8 +165,7 @@ public class UserController {
                     .toUriString();
             return "redirect:" + redirectUrl;
         }
-
-        // ★★★ DB更新処理（エラー処理なしの、Mission 3終了時の状態） ★★★
+        
         System.out.println(form.getId());
         User user = userService.findById(form.getId()).orElse(new User());
         user.setEmail(form.getEmail());
@@ -185,7 +173,7 @@ public class UserController {
         user.setEmployeeNo((form.getEmployeeNo()));
         user.setJoiningDate(form.getJoiningDate());
         userService.save(user);
-        
+       
         Name name = nameService.findByUserId(form.getId());
         name.setFnJp(form.getFnJp());
         name.setFnJpHira(form.getFnJpHira());
@@ -210,7 +198,7 @@ public class UserController {
         return "redirect:/user/index";
 
     }
-    
+   
     @PostMapping("/user/destroy")
     public String destroy(@ModelAttribute("userForm") UserForm form) {
         userService.deleteById(form.getId());

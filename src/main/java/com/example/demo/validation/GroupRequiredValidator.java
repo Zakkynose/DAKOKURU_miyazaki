@@ -47,7 +47,6 @@ public class GroupRequiredValidator implements ConstraintValidator<GroupRequired
                 }
             }
         }
-
         return true;
     }
 }

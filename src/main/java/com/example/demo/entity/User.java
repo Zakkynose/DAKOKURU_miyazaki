@@ -82,12 +82,7 @@ public class User {
     @JoinTable(name = "department_affiliations", joinColumns = @JoinColumn(name = "user_id"), 
         inverseJoinColumns = @JoinColumn(name = "department_id"))
     private Set<Department> departments = new HashSet<>();
-    //    @OneToMany()
-    //    @JoinColumn(name = "user_id")
-    //    private List<Timestamp> timestamp = new ArrayList<>();
 
-	public void setEmployeeNo(String employeeNo) {
-		// TODO 自動生成されたメソッド・スタブ
-		
-	}
+    public void setEmployeeNo(String employeeNo) {
+    }
 }
